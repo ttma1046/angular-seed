@@ -7,13 +7,19 @@ import {
   transition,
   animate
 } from '@angular/core';
-
-import { Heros } from './hero.service';
-
-@Component(
-{
+import { Heroes } from './hero.service';
+@Component({
   moduleId: module.id,
   selector: 'hero-list-basic',
+  template: `
+    <ul>
+      <li *ngFor="let hero of heroes"
+          [@heroState]="hero.state"
+          (click)="hero.toggleState()">
+        {{hero.name}}
+      </li>
+    </ul>
+  `,
   styleUrls: ['hero-list.component.css'],
   animations: [
     trigger('heroState', [
@@ -28,15 +34,8 @@ import { Heros } from './hero.service';
       transition('inactive => active', animate('100ms ease-in')),
       transition('active => inactive', animate('100ms ease-out'))
     ])
-  ],
-  template: `
-	<ul>
-		<li *ngFor="let hero of heros"
-			[@heroState]="hero.state"
-			(click)="hero.toggleState()">
-			{{hero.name}}
-		</li>
-	</ul>
-  `
+  ]
 })
-
+export class HeroListBasicComponent {
+  @Input() heroes: Heroes;
+}
