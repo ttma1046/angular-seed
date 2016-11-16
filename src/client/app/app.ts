@@ -42,7 +42,7 @@ const $removeButton = $todoItem.querySelector('.button-remove')
     .mapTo($todoItem)
 })
   .do(($todoItem: HTMLElement) => {
-    // 从 DOM 上移掉 todo item
+    // �DOM 上移�todo item
     const $parent = $todoItem.parentNode
     $parent.removeChild($todoItem)
   })

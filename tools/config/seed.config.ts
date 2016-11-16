@@ -282,11 +282,11 @@ export class SeedConfig {
   VERSION_NODE = '4.0.0';
 
   /**
-   * The flag to enable handling of SCSS files
-   * The default value is false. Override with the '--scss' flag.
+   * Enable SCSS stylesheet compilation.
+   * Set ENABLE_SCSS environment variable to 'true' or '1'
    * @type {boolean}
    */
-  ENABLE_SCSS = argv['scss'] || false;
+  ENABLE_SCSS = ['true', '1'].indexOf(`${process.env.ENABLE_SCSS}`.toLowerCase()) !== -1 || argv['scss'] || false;
 
   /**
    * The list of NPM dependcies to be injected in the `index.html`.
@@ -566,11 +566,21 @@ export class SeedConfig {
 
     if (pack.path) {
       this.SYSTEM_CONFIG_DEV.paths[pack.name] = pack.path;
+      this.SYSTEM_BUILDER_CONFIG.paths[pack.name] = pack.path;
     }
 
     if (pack.packageMeta) {
+      this.SYSTEM_CONFIG_DEV.packages[pack.name] = pack.packageMeta;
       this.SYSTEM_BUILDER_CONFIG.packages[pack.name] = pack.packageMeta;
     }
+  }
+
+  addPackagesBundles(packs: ExtendPackages[]) {
+
+    packs.forEach((pack: ExtendPackages) => {
+      this.addPackageBundles(pack);
+    });
+
   }
 
 }
@@ -626,4 +636,3 @@ function getBuildType() {
     return BUILD_TYPES.DEVELOPMENT;
   }
 }
-
